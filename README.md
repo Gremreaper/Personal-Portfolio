@@ -32,9 +32,3 @@
 - No backend or database required
 
 ---
-
-<h2>📦 How to Use</h2>
-
-1. <strong>Clone the repository</strong>  
-   ```bash
-   git clone https://github.com/your-username/your-repo-name.git
