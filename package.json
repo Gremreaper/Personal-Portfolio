@@ -16,8 +16,5 @@
   "bugs": {
     "url": "https://github.com/Gremreaper/Personal-Portfolio/issues"
   },
-  "homepage": "https://github.com/Gremreaper/Personal-Portfolio#readme",
-  "dependencies": {
-    "counterapi": "^3.1.0"
-  }
+  "homepage": "https://github.com/Gremreaper/Personal-Portfolio#readme"
 }

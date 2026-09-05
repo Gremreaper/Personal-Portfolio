@@ -1,31 +1,50 @@
-import { Counter } from "counterapi";
-
-const counter = new Counter({
-    workspace: process.env.COUNTER_WORKSPACE,
-    accessToken: process.env.COUNTER_API_TOKEN
-});
-
 export default async function handler(req, res) {
     try {
-        let result;
+        const workspace = process.env.COUNTER_WORKSPACE;
+        const token = process.env.COUNTER_API_TOKEN;
 
-        if (req.method === "POST") {
-            // Count a new visitor
-            result = await counter.up("portfolio-visits");
-        } else {
-            // Just retrieve the current count
-            result = await counter.get("portfolio-visits");
+        if (!workspace || !token) {
+            return res.status(500).json({
+                error: "CounterAPI environment variables are missing"
+            });
         }
 
-        res.status(200).json({
-            count: result.value
+        let url;
+
+        if (req.method === "POST") {
+            // Increment visitor counter
+            url = `https://api.counterapi.dev/v2/${workspace}/portfolio-visits/up`;
+        } else {
+            // Get current visitor count
+            url = `https://api.counterapi.dev/v2/${workspace}/portfolio-visits`;
+        }
+
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            console.error("CounterAPI error:", result);
+
+            return res.status(response.status).json({
+                error: "CounterAPI request failed"
+            });
+        }
+
+        return res.status(200).json({
+            count: result.data.up_count
         });
 
     } catch (error) {
-        console.error("CounterAPI error:", error);
+        console.error("Visitor counter error:", error);
 
-        res.status(500).json({
-            error: "Unable to retrieve visitor count"
+        return res.status(500).json({
+            error: "Internal visitor counter error"
         });
     }
 }

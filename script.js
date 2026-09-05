@@ -74,6 +74,8 @@ for (let i = 0; i < selectItems.length; i++) {
 
 //Portfolio visitor counter using CounterAPI
 
+// Portfolio visitor counter
+
 async function updateVisitorCounter() {
     const counterElement = document.getElementById("visitor-count");
 
@@ -90,14 +92,20 @@ async function updateVisitorCounter() {
                 method: "POST"
             });
 
+            if (!response.ok) {
+                throw new Error(`Server returned ${response.status}`);
+            }
+
+            // Only remember the visitor AFTER successful request
             localStorage.setItem("portfolioVisitor", "true");
+
         } else {
             // Returning visitor - don't increment
             response = await fetch("/api/visitors");
-        }
 
-        if (!response.ok) {
-            throw new Error("Failed to fetch visitor count");
+            if (!response.ok) {
+                throw new Error(`Server returned ${response.status}`);
+            }
         }
 
         const data = await response.json();
