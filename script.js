@@ -72,6 +72,46 @@ for (let i = 0; i < selectItems.length; i++) {
   });
 }
 
+//Portfolio visitor counter using CounterAPI
+
+async function updateVisitorCounter() {
+    const counterElement = document.getElementById("visitor-count");
+
+    if (!counterElement) return;
+
+    try {
+        const hasVisited = localStorage.getItem("portfolioVisitor");
+
+        let response;
+
+        if (!hasVisited) {
+            // First visit from this browser
+            response = await fetch("/api/visitors", {
+                method: "POST"
+            });
+
+            localStorage.setItem("portfolioVisitor", "true");
+        } else {
+            // Returning visitor - don't increment
+            response = await fetch("/api/visitors");
+        }
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch visitor count");
+        }
+
+        const data = await response.json();
+
+        counterElement.textContent = data.count;
+
+    } catch (error) {
+        console.error("Visitor counter error:", error);
+        counterElement.textContent = "—";
+    }
+}
+
+updateVisitorCounter();
+
 // filter variables
 const filterItems = document.querySelectorAll("[data-filter-item]");
 

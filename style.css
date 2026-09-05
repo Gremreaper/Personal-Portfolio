@@ -164,6 +164,25 @@ body { background: var(--smoky-black); }
 /*-----------------------------------*\
   #REUSED STYLE
 \*-----------------------------------*/
+.visitor-counter {
+    display: block;
+    width: fit-content;
+    margin: 15px auto 0;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 193, 7, 0.25);
+    text-align: center;
+    white-space: nowrap;
+}
+
+#visitor-count {
+    color: #ffc107;
+    font-weight: 600;
+}
+
 
 .sidebar,
 article {
